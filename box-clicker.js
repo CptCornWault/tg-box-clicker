@@ -29,8 +29,6 @@ function show_box() {
 function hide_box() {
     $( "#box" ).hide();
     $( "#box" ).stop();
-    $( "#box" ).css( 'opacity', 100 );
-    $( "#box" ).css( 'background-color', "var(--white)" );
 }
 
 function position_box() {
@@ -41,19 +39,21 @@ function position_box() {
 }
 
 function box_wait() {
-    console.log( current_game_speed );
-    end_game_timeout = setTimeout( () => { end_game() }, current_game_speed );
+    // console.log( current_game_speed );
+    if ( click_end_game ) {
+        end_game_timeout = setTimeout( () => { next_box() }, current_game_speed );
+    }
+    else {
+        end_game_timeout = setTimeout( () => { end_game() }, current_game_speed );
+    }
 }
 
 function end_game() {
-    if ( ! click_end_game ) {
-        $( "#box" ).hide();
-        $( "#too_slow" ).show();
-        $( "#start" ).show();
-    }
-    else {
-        reset_box();
-    }
+    cycle_box();
+    clearTimeout( end_game_timeout );
+    $( "#box" ).hide();
+    $( "#too_slow" ).show();
+    $( "#start" ).show();
 }
 
 function start_game() {
@@ -80,9 +80,15 @@ function countdown() {
     current_countdown -= 1;
 }
 
-function reset_box() {
+function cycle_box() {
     current_game_speed = Math.floor( current_game_speed - current_game_speed * faster_increment );
     clearTimeout( end_game_timeout );
+    $( "#box" ).css( 'opacity', 100 );
+    $( "#box" ).css( 'background-color', "var(--white)" );
+}
+
+function next_box() {
+    cycle_box()
     hide_box();
     try_no_click()
     position_box();
@@ -107,6 +113,7 @@ $( "#box" ).click( function() {
         end_game();
     }
     else {
-        reset_box();
+        cycle_box();
+        next_box();
     }
 } );
