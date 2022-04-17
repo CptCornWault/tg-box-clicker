@@ -1,7 +1,8 @@
 :root {
     --light-blue: #eeeeff;
     --grey: #7f7f7f;
-    --white: #ffffff
+    --white: #ffffff;
+    --red: #e05b5b;
 }
 * {
     margin: 0px;
