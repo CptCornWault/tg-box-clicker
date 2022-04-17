@@ -28,7 +28,7 @@ function show_box() {
 
 function hide_box() {
     $( "#box" ).hide();
-    $( "#box" ).stop();
+    $( "#box" ).stop(); // stops the fade-out animation
 }
 
 function position_box() {
@@ -49,7 +49,6 @@ function box_wait() {
 }
 
 function end_game() {
-    cycle_box();
     clearTimeout( end_game_timeout );
     $( "#box" ).hide();
     $( "#too_slow" ).show();
@@ -57,8 +56,9 @@ function end_game() {
 }
 
 function start_game() {
-    show_box();
-    box_wait();
+    // show_box();
+    // box_wait();
+    next_box();
 }
 
 function try_no_click() {
@@ -80,16 +80,19 @@ function countdown() {
     current_countdown -= 1;
 }
 
-function cycle_box() {
-    current_game_speed = Math.floor( current_game_speed - current_game_speed * faster_increment );
-    clearTimeout( end_game_timeout );
-    $( "#box" ).css( 'opacity', 100 );
-    $( "#box" ).css( 'background-color', "var(--white)" );
+function reset_box() {
+    hide_box();
+    if ( typeof end_game_timeout !== 'undefined' ) {
+        clearTimeout( end_game_timeout );
+        current_game_speed = Math.floor( current_game_speed - current_game_speed * faster_increment );
+        $( "#box" ).css( 'opacity', 100 );
+        $( "#box" ).css( 'background-color', "var(--white)" );
+    }
 }
 
 function next_box() {
-    cycle_box()
-    hide_box();
+    // console.log( "click" );
+    reset_box()
     try_no_click()
     position_box();
     show_box();
@@ -102,8 +105,8 @@ $( "#start" ).click( function() {
     current_game_speed = initial_game_speed
     $( "#too_slow" ).hide();
     $( "#start" ).hide();
-    try_no_click();
-    position_box();
+    // try_no_click();
+    // position_box();
     countdown();
     countdown_interval = setInterval( countdown, 1000 );
 } );
@@ -113,7 +116,7 @@ $( "#box" ).click( function() {
         end_game();
     }
     else {
-        cycle_box();
+        reset_box();
         next_box();
     }
 } );
