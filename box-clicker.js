@@ -1,3 +1,6 @@
+// issues
+// if the second game starts with a red box you lose by not clicking it
+
 // the starting integer of the game start countdown timer
 var countdown_from = 2;
 
