@@ -119,6 +119,7 @@ $( "#start" ).click( function() {
     // console.log( "click" );
     game_started = false; // reset to false so subsequent games start properly
     score = 0;
+    $( "#score" ).text( score );
     current_countdown = countdown_from;
     current_game_speed = initial_game_speed
     $( "#too_slow" ).hide();
