@@ -60,7 +60,7 @@ function box_wait() {
 function end_game() {
     clearTimeout( end_game_timeout );
     $( "#box" ).hide();
-    $( "#too_slow" ).show();
+    $( "#game_over" ).show();
     $( "#start" ).show();
 }
 
@@ -122,7 +122,7 @@ $( "#start" ).click( function() {
     $( "#score" ).text( score );
     current_countdown = countdown_from;
     current_game_speed = initial_game_speed
-    $( "#too_slow" ).hide();
+    $( "#game_over" ).hide();
     $( "#start" ).hide();
     countdown();
     countdown_interval = setInterval( countdown, 1000 );
