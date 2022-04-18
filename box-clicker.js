@@ -16,7 +16,13 @@ var initial_game_speed = 2000;
 var faster_increment = 0.03;
 
 // one out of chance_of_no_click times clicking the box will end the game
-var chance_of_no_click = 5
+var chance_of_no_click = 5;
+
+// changed to true after the first next_box() is called
+var game_started = false;
+
+// games score
+var score = 0;
 
 function show_box() {
     $( "#box" ).show();
@@ -56,8 +62,6 @@ function end_game() {
 }
 
 function start_game() {
-    // show_box();
-    // box_wait();
     next_box();
 }
 
@@ -82,31 +86,40 @@ function countdown() {
 
 function reset_box() {
     hide_box();
-    if ( typeof end_game_timeout !== 'undefined' ) {
+    // if ( typeof end_game_timeout !== 'undefined' ) {
         clearTimeout( end_game_timeout );
         current_game_speed = Math.floor( current_game_speed - current_game_speed * faster_increment );
         $( "#box" ).css( 'opacity', 100 );
         $( "#box" ).css( 'background-color', "var(--white)" );
-    }
+    // }
+}
+
+function cycle_score() {
+    score += 1;
+    $( "#score" ).text( score );
 }
 
 function next_box() {
     // console.log( "click" );
-    reset_box()
+    if ( game_started ) {
+        reset_box()
+        cycle_score();
+    }
     try_no_click()
     position_box();
     show_box();
     box_wait();
+    game_started = true;
 }
 
 $( "#start" ).click( function() {
     // console.log( "click" );
+    game_started = false; // reset to false so subsequent games start properly
+    score = 0;
     current_countdown = countdown_from;
     current_game_speed = initial_game_speed
     $( "#too_slow" ).hide();
     $( "#start" ).hide();
-    // try_no_click();
-    // position_box();
     countdown();
     countdown_interval = setInterval( countdown, 1000 );
 } );
